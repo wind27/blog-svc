@@ -109,13 +109,12 @@ public class RabbitmqService {
                         return;
                     }
                     redisService.sSet(RedisKey.TASK_LINK_URL_LIST, blogUrl);
-                    Thread.sleep(1000);
-
                     Link link = linkService.findByUrl(blogUrl);
                     if (link != null) {
                         return;
                     }
 
+                    Thread.sleep(1000);
                     link = new Link();
                     link.setSource(BlogSource.ALIYUN.getValue());
                     link.setUrl(blogUrl);
