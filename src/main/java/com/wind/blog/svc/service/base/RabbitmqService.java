@@ -96,12 +96,11 @@ public class RabbitmqService {
                         return;
                     }
 
-
                     JSONObject jsonObject = JSONObject.parseObject(msg.getBody());
                     String blogUrl = jsonObject.getString("url");
                     Integer blogSource = jsonObject.getInteger("blogSource");
-                    if(StringUtils.isEmpty(blogUrl) || blogSource == null) {
-                        return ;
+                    if (StringUtils.isEmpty(blogUrl) || blogSource == null) {
+                        return;
                     }
 
                     // 判断是否已经存在
@@ -113,7 +112,7 @@ public class RabbitmqService {
                     Thread.sleep(1000);
 
                     Link link = linkService.findByUrl(blogUrl);
-                    if (link == null) {
+                    if (link != null) {
                         return;
                     }
 
@@ -129,7 +128,8 @@ public class RabbitmqService {
 
                     }
 
-                    if (blog == null) {
+                    if (blog == null || StringUtils.isEmpty(blog.getTitle()) || StringUtils.isEmpty(blog.getContent())
+                            || blog.getTitle().length() > 255) {
                         return;
                     }
                     blogService.add(blog);

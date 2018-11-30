@@ -10,7 +10,7 @@ CREATE TABLE `blog` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `tags` varchar(64) DEFAULT '' COMMENT '标签：多个之间用,隔开',
   `source` int(11) NOT NULL DEFAULT '1' COMMENT '文章来源：1、阿里云',
-  `title` varchar(64) NOT NULL DEFAULT '' COMMENT '标题',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT '标题',
   `content` text NOT NULL COMMENT '内容',
   `summary` varchar(255) NOT NULL DEFAULT '' COMMENT '摘要',
   `uid` bigint(20) NOT NULL DEFAULT '0' COMMENT '用户id：0、表示网上爬取',

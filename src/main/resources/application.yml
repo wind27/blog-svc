@@ -33,5 +33,5 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
 
 server:
-  port: 8099
+  port: 8080
 #debug: true
