@@ -1,8 +1,11 @@
 package com.wind.blog.svc.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.wind.blog.mapper.LinkMapper;
+import com.wind.blog.model.Link;
 import com.wind.blog.svc.common.Constant;
 import com.wind.blog.svc.common.RedisKey;
+import com.wind.blog.svc.mapper.LinkMapperEx;
 import com.wind.blog.svc.model.emun.BlogSource;
 import com.wind.blog.svc.model.emun.MsgType;
 import com.wind.blog.svc.model.emun.QueueName;
@@ -35,6 +38,9 @@ public class LinkParseService {
 
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private LinkMapperEx linkMapperEx;
 
     private static List<BlogSource> blogSourceList = new ArrayList<>();
 
@@ -139,6 +145,11 @@ public class LinkParseService {
                 //判断是否已经存在
                 boolean exists = redisService.sHasKey(RedisKey.TASK_LINK_URL_LIST, blogUrl);
                 if(exists) {
+                    continue;
+                }
+                Link link = linkMapperEx.findByUrl(blogUrl);
+                if(link != null) {
+                    redisService.sSet(RedisKey.TASK_LINK_URL_LIST, blogUrl);
                     continue;
                 }
                 Thread.sleep(100);
