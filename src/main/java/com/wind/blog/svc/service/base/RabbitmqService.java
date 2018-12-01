@@ -114,7 +114,7 @@ public class RabbitmqService {
                         return;
                     }
 
-                    Thread.sleep(1000);
+                    Thread.sleep(200);
                     link = new Link();
                     link.setSource(BlogSource.ALIYUN.getValue());
                     link.setUrl(blogUrl);
