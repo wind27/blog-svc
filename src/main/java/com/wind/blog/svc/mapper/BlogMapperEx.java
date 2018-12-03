@@ -16,12 +16,11 @@ import org.apache.ibatis.type.JdbcType;
 @Mapper
 public interface BlogMapperEx extends BlogMapper {
 
-    String COLUMNS = " id, tags, from, title, summary, uid, create_time, update_time, publish_time, content ";
+    String COLUMNS = " id, tags, title, summary, uid, create_time, update_time, publish_time, content ";
 
     @Select({ "select" + COLUMNS + "from blog where id = #{id}" })
     @Results({ @Result(column = "id", property = "id", jdbcType = JdbcType.BIGINT, id = true),
             @Result(column = "tags", property = "tags", jdbcType = JdbcType.VARCHAR),
-            @Result(column = "from", property = "from", jdbcType = JdbcType.INTEGER),
             @Result(column = "title", property = "title", jdbcType = JdbcType.VARCHAR),
             @Result(column = "summary", property = "summary", jdbcType = JdbcType.VARCHAR),
             @Result(column = "uid", property = "uid", jdbcType = JdbcType.BIGINT),
