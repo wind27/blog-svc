@@ -157,6 +157,7 @@ public class LinkParseService {
                 if(link != null) {
                     Blog blog = blogMapperEx.findById(link.getBlogId());
                     blog.setTags(cataLog);
+                    blog.setSource(blogSource.getValue());
                     blogMapperEx.updateByPrimaryKey(blog);
                     redisService.sSet(RedisKey.TASK_LINK_URL_LIST, blogUrl);
                     continue;
