@@ -149,10 +149,10 @@ public class LinkParseService {
                     continue;
                 }
                 //判断是否已经存在
-                boolean exists = redisService.sHasKey(RedisKey.TASK_LINK_URL_LIST, blogUrl);
-                if(exists) {
-                    continue;
-                }
+//                boolean exists = redisService.sHasKey(RedisKey.TASK_LINK_URL_LIST, blogUrl);
+//                if(exists) {
+//                    continue;
+//                }
                 Link link = linkMapperEx.findByUrl(blogUrl);
                 if(link != null) {
                     Blog blog = blogMapperEx.findById(link.getBlogId());
