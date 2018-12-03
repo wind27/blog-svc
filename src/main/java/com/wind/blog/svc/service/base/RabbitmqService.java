@@ -8,6 +8,7 @@ import com.wind.blog.svc.common.Constant;
 import com.wind.blog.svc.common.RedisKey;
 import com.wind.blog.svc.config.RabbitMqConfig;
 import com.wind.blog.svc.model.emun.BlogSource;
+import com.wind.blog.svc.model.emun.BlogStatus;
 import com.wind.blog.svc.model.rabbitmq.Msg;
 import com.wind.blog.svc.service.BlogParseService;
 import com.wind.blog.svc.service.BlogService;
@@ -132,6 +133,7 @@ public class RabbitmqService {
                         return;
                     }
                     blog.setTags(cataLog);
+                    blog.setStatus(BlogStatus.PUBLISH.getValue());
                     blogService.add(blog);
                     link.setBlogId(blog.getId());
                     boolean flag = linkService.add(link);
@@ -144,7 +146,6 @@ public class RabbitmqService {
                 } finally {
                     channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
                 }
-
             }
         });
         return container;

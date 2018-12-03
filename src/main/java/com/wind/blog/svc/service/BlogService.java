@@ -27,3 +27,4 @@ public class BlogService {
         return blogMapperEx.insert(blog) > 0;
     }
 }
+

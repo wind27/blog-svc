@@ -10,6 +10,7 @@ import com.wind.blog.svc.common.RedisKey;
 import com.wind.blog.svc.mapper.BlogMapperEx;
 import com.wind.blog.svc.mapper.LinkMapperEx;
 import com.wind.blog.svc.model.emun.BlogSource;
+import com.wind.blog.svc.model.emun.BlogStatus;
 import com.wind.blog.svc.model.emun.MsgType;
 import com.wind.blog.svc.model.emun.QueueName;
 import com.wind.blog.svc.model.rabbitmq.Msg;
@@ -158,6 +159,7 @@ public class LinkParseService {
                     Blog blog = blogMapperEx.findById(link.getBlogId());
                     blog.setTags(cataLog);
                     blog.setSource(blogSource.getValue());
+                    blog.setStatus(BlogStatus.PUBLISH.getValue());
                     blogMapperEx.updateByPrimaryKey(blog);
                     redisService.sSet(RedisKey.TASK_LINK_URL_LIST, blogUrl);
                     continue;
