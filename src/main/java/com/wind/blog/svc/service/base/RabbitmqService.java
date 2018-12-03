@@ -99,6 +99,7 @@ public class RabbitmqService {
                     JSONObject jsonObject = JSONObject.parseObject(msg.getBody());
                     String blogUrl = jsonObject.getString("url");
                     Integer blogSource = jsonObject.getInteger("blogSource");
+                    String cataLog = jsonObject.getString("cataLog");
                     if (StringUtils.isEmpty(blogUrl) || blogSource == null) {
                         return;
                     }
@@ -116,7 +117,7 @@ public class RabbitmqService {
 
                     Thread.sleep(20);
                     link = new Link();
-                    link.setSource(BlogSource.ALIYUN.getValue());
+                    link.setSource(blogSource);
                     link.setUrl(blogUrl);
                     link.setIsParse(Constant.LINK_IS_PARSE.YES);
 
@@ -126,11 +127,11 @@ public class RabbitmqService {
                     } else if (blogSource == BlogSource.CSDN.getValue()) {
 
                     }
-
                     if (blog == null || StringUtils.isEmpty(blog.getTitle()) || StringUtils.isEmpty(blog.getContent())
                             || blog.getTitle().length() > 255) {
                         return;
                     }
+                    blog.setTags(cataLog);
                     blogService.add(blog);
                     link.setBlogId(blog.getId());
                     boolean flag = linkService.add(link);

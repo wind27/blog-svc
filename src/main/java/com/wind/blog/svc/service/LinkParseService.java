@@ -1,10 +1,13 @@
 package com.wind.blog.svc.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.wind.blog.mapper.BlogMapper;
 import com.wind.blog.mapper.LinkMapper;
+import com.wind.blog.model.Blog;
 import com.wind.blog.model.Link;
 import com.wind.blog.svc.common.Constant;
 import com.wind.blog.svc.common.RedisKey;
+import com.wind.blog.svc.mapper.BlogMapperEx;
 import com.wind.blog.svc.mapper.LinkMapperEx;
 import com.wind.blog.svc.model.emun.BlogSource;
 import com.wind.blog.svc.model.emun.MsgType;
@@ -41,6 +44,9 @@ public class LinkParseService {
 
     @Autowired
     private LinkMapperEx linkMapperEx;
+
+    @Autowired
+    private BlogMapperEx blogMapperEx;
 
     private static List<BlogSource> blogSourceList = new ArrayList<>();
 
@@ -102,7 +108,7 @@ public class LinkParseService {
                 if (blogSource == BlogSource.ALIYUN) {
                     url = AliyunParser.getUrl(catalog, ++num);// 分页URL
                 }
-                boolean flag = this.parseAndSendMsg(url, blogSource);
+                boolean flag = this.parseAndSendMsg(url, blogSource, catalog);
                 if(!flag) {
                     break;
                 }
@@ -122,7 +128,7 @@ public class LinkParseService {
      * @param url 带解析的分页URL
      * @param blogSource BLOG来源
      */
-    private boolean parseAndSendMsg(String url, BlogSource blogSource) {
+    private boolean parseAndSendMsg(String url, BlogSource blogSource, String cataLog) {
         try {
             if (StringUtils.isEmpty(url)) {
                 logger.error("[LINK解析] 参数错误, url={}", url);
@@ -149,12 +155,16 @@ public class LinkParseService {
                 }
                 Link link = linkMapperEx.findByUrl(blogUrl);
                 if(link != null) {
+                    Blog blog = blogMapperEx.findById(link.getBlogId());
+                    blog.setTags(cataLog);
+                    blogMapperEx.updateByPrimaryKey(blog);
                     redisService.sSet(RedisKey.TASK_LINK_URL_LIST, blogUrl);
                     continue;
                 }
-                Thread.sleep(100);
+                Thread.sleep(10);
                 Map<String, Object> data = new HashMap<>();
                 data.put("url", blogUrl);
+                data.put("cataLog", cataLog);
                 data.put("blogSource", blogSource.getValue());
                 Msg msg = new Msg();
                 msg.setMsgType(MsgType.BLOG_ADD);

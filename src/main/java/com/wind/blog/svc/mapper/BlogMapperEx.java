@@ -29,5 +29,5 @@ public interface BlogMapperEx extends BlogMapper {
             @Result(column = "update_time", property = "updateTime", jdbcType = JdbcType.TIMESTAMP),
             @Result(column = "publish_time", property = "publishTime", jdbcType = JdbcType.TIMESTAMP),
             @Result(column = "content", property = "content", jdbcType = JdbcType.LONGVARCHAR) })
-    Blog findById(String url);
+    Blog findById(Long id);
 }
