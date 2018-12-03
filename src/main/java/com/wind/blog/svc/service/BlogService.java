@@ -19,8 +19,8 @@ public class BlogService {
     @Autowired
     private BlogMapperEx blogMapperEx;
 
-    public Blog findById(String url) {
-        return blogMapperEx.findById(url);
+    public Blog findById(Long id) {
+        return blogMapperEx.findById(id);
     }
 
     public boolean add(Blog blog) {
